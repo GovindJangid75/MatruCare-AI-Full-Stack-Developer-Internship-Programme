@@ -1,0 +1,20 @@
+/**
+ * Custom API Error class
+ * Extends native Error class with statusCode and isOperational properties
+ */
+class ApiError extends Error {
+  constructor(statusCode, message, isOperational = true, stack = '') {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = isOperational;
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+
+    if (stack) {
+      this.stack = stack;
+    } else {
+      Error.captureStackTrace(this, this.constructor);
+    }
+  }
+}
+
+export default ApiError;
